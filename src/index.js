@@ -1,7 +1,7 @@
-import itemsElement from './menu.json';
-import itemsTemplate from './templates/menu.hbs';
-import './mymain.js';
-import './styles.css';
-const menu = document.querySelector('.js-menu');
-const makup = itemsTemplate(itemsElement);
-menu.insertAdjacentHTML('beforeend', makup);
+//import itemsTemplate from './templates/menu.hbs';
+//import './mymain.js';
+//import './styles.css';
+fetch('http://localhost:3000/users')
+  .then(data => data.json())
+  .then(console.log())
+  .catch(error => console.log('failed to fetch'));
