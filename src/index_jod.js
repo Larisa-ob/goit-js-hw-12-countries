@@ -5,6 +5,12 @@ import 'toastr/build/toastr.min.css';
 import './styles.css';
 import savedTodos from './todos.json';
 //import { response } from 'express';
+const inputTextRef = document.querySelector('text');
+inputTextRef.addEventListener('input', e => {
+    e.preventDefault();
+    const inputdataLength = e.target.attributes['data-length'].nodeValue;
+    console.log(inputdataLength);
+});
 
 let todos = savedTodos;
 toastr.options = options;
