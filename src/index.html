@@ -11,13 +11,16 @@
         />
     </head>
     <body>
-        <h1>MY API</h1>
-        <div class="control">
-            <form class="input-form">
-                <span class="text-countries">Введите страну</span>
-                <input class="input-countries" type="text" />
-            </form>
-            <ul class="todo-list"></ul>
+        <h1 class="title">Введите название страны</h1>
+        <div class="input-form">
+            <input
+                class="input-countries"
+                id="js-input"
+                type="search"
+                autocomplete="off"
+                placeholder="ввод на английском языке"
+            />
+            <div class="search-result" id="js-output"></div>
         </div>
     </body>
 </html>
