@@ -1,45 +1,37 @@
+import toastr, { error } from 'toastr';
+import options from './toastr.options';
+import debounce from 'lodash.debounce';
 import fetchCountries from './fetchCountries';
-import { success, info, error } from './pnotify.js';
-import oneCountryMarkup from '../templates/countries.hbs';
-import upToTenCountriesMarkup from '../templates/ten_countries.hbs';
+import itemsTemplate from '../templates/countries.hbs';
+import 'toastr/build/toastr.min.css';
 
+toastr.options = options;
 const refs = {
     input: document.querySelector('#js-input'),
     output: document.querySelector('#js-output'),
 };
-const _ = require('lodash');
-const url = 'https://restcountries.eu/rest/v2/name/';
 
-const debouncedSearch = _.debounce(() => {
-    if (refs.input.value !== '') {
-        fetchCountries(url + refs.input.value.toLowerCase())
-            .then(data => {
-                searchMarkup(data);
-            })
-            .catch(e => {
-                error({
-                    title: 'Ooops! Something went wrong 🤷',
-                    text: e.message,
-                    type: 'error',
-                });
-                refs.output.innerHTML = '';
-            });
-    }
-}, 500);
-
-const searchMarkup = function (data) {
-    if (data.length === 1) {
-        refs.output.innerHTML = oneCountryMarkup(data);
-    } else if ((data.length > 1) & (data.length <= 10)) {
-        refs.output.innerHTML = upToTenCountriesMarkup(data);
-    } else if (data.length > 10) {
-        error({
-            title: 'Too many matches found!',
-            text: 'Please enter a more specific query.',
-            type: 'error',
+refs.input.addEventListener('input', debounce(handleTextareaInput, 500));
+refs.input.addEventListener('submit', e => e.preventDefault());
+function handleTextareaInput(e) {
+    const outputText = e.target.value;
+    fetchCountries(outputText)
+        .then(result => {
+            if (result.length > 10) {
+                toastr['warning'](
+                    'Too many matches found. Please enter a more specific query!',
+                );
+                return;
+            } else if (result.length === 1) {
+                const markup = itemsTemplate(result);
+                refs.output.innerHTML = `${markup}`;
+                return;
+            }
+            const list = result.map(el => `<li> ${el.name}</li>`).join('');
+            refs.output.innerHTML = `${list}`;
+        })
+        .catch(result => {
+            toastr['error']('Country with this name not found');
+            refs.output.innerHTML = ``;
         });
-        refs.output.innerHTML = '';
-    }
-};
-refs.input.addEventListener('input', debouncedSearch);
-refs.input.addEventListener('submit', event => event.preventDefault());
+}

@@ -13,7 +13,7 @@ body {
         Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif,
         'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
     color: rgb(40, 40, 40);
-    background-color: wheat;
+    background-image: url('./images/bg-pattern.png');
 }
 .title {
     color: rgb(31, 146, 83);

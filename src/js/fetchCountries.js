@@ -1,12 +1,8 @@
-export default function fetchCountries(searchQuery) {
-    return fetch(searchQuery)
-        .then(response => {
-            return response.json();
-        })
-        .then(data => {
-            if (!data.status) {
-                return data;
-            }
-            throw new Error(`${data.status}: ${data.message}`);
-        });
+function fetchCountries(searchQuery) {
+    const url = `https://restcountries.eu/rest/v2/name/${searchQuery}`;
+    return fetch(url)
+        .then(res => res.json())
+        .catch(error => console.log(error));
 }
+
+export default fetchCountries;
